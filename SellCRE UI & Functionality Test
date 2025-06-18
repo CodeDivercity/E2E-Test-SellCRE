@@ -1,0 +1,56 @@
+import { test, expect } from '@playwright/test';
+
+test.beforeEach(async ({ page }) => {
+
+  await page.goto('https://sellcre.ai/');
+
+  //Start Login Verification.
+  await page.getByRole('link', { name: 'Free trial' }).nth(1).click();
+  await page.getByRole('link', { name: 'Already have account? Login' }).click();
+  await page.waitForURL('https://app.sellcre.ai/login');
+
+  await page.getByRole('textbox', { name: 'Email*' }).click();
+  await page.getByRole('textbox', { name: 'Email*' }).fill('test@test.com');
+  await page.getByRole('textbox', { name: 'Password*' }).click();
+  await page.getByRole('textbox', { name: 'Password*' }).fill('Test@123');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.waitForTimeout(5000);
+  await page.reload('https://app.sellcre.ai/login');
+  //End Login verification.
+
+});
+
+test.afterEach(async ({page}) => {
+  await page.close();
+});
+
+test('SellCRE UI Test', async ({ page }) => {
+
+  await expect(page.getByRole('heading', { name: 'Create a Marketing Package' })).toHaveText('Create a Marketing Package');
+  await expect(page.getByRole('heading', { name: 'Create a Marketing Package' })).toBeVisible();
+  await expect(page).toHaveURL('https://app.sellcre.ai/app')
+  await expect(page).toHaveTitle('SellCRE | App');
+
+});
+
+test('SellCRE Functionality Test Add Property', async ({ page }) => {
+
+  //Start testing assertions functionality.
+  await page.getByRole('link', { name: 'Add Property' }).click();
+  await page.getByRole('button', { name: 'CONTINUE' }).click();
+  await page.getByRole('link', { name: 'Select' }).first().click();
+  await page.getByRole('textbox').click();
+  await page.getByRole('textbox').fill('Ahshan\'s E2E Test');
+  await page.getByRole('button', { name: 'Proceed' }).click();
+  await page.getByRole('button', { name: 'Exit Deal' }).click();
+  await page.getByRole('link', { name: 'logo' }).click();
+
+
+});
+
+test('Logout Verification', async ({ page }) => {
+
+  await page.getByRole('button', { name: 'g gyanisingh >' }).click();
+  await page.getByText('Log Out').click();
+
+});
